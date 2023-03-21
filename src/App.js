@@ -5,6 +5,10 @@ import New from './pages/New';
 import Edit from './pages/Edit';
 import Diary from './pages/Diary';
 
+// Components
+import MyButton from './components/MyButton';
+import MyHeader from './components/MyHeader';
+
 
 function App() {
   const env = process.env;
@@ -13,8 +17,33 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <MyHeader headText={"App"} 
+        leftChild={<MyButton text={"왼쪽 버튼"} onClick={() => alert("왼쪽 버튼")}/>} 
+        rightChild={<MyButton text={"오른쪽 버튼"} onClick={() => alert("오른쪽 버튼")}/>}
+        />
         <h2>App.js</h2>
 
+        <MyButton 
+          text={"버튼"}
+          onClick={() => alert("포지티브 버튼 클릭")}
+          type={"positive"}
+        />
+
+        <MyButton 
+          text={"버튼"}
+          onClick={() => alert("네거티브 버튼 클릭")}
+          type={"negative"}
+        />
+        <MyButton 
+          text={"버튼"}
+          onClick={() => alert("디폴트 버튼 클릭")}
+          type={"default"}
+        />
+         <MyButton 
+          text={"버튼"}
+          onClick={() => alert("디폴트 버튼 클릭")}
+          type={"dasdadsa"}
+        />
         {/* 
           process.env.PUBLIC_URL는 public 디렉토리의 경로를 
           바로 쓸 수 있는 명령어다!
