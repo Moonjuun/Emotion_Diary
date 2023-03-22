@@ -44,7 +44,7 @@ const dummyData = [
   { id: 2, emotion: 2, content: "오늘의 일기2", date: 1679465758876 },
   { id: 3, emotion: 3, content: "오늘의 일기3", date: 1679465816943 },
   { id: 4, emotion: 4, content: "오늘의 일기4", date: 1679465822621 },
-  { id: 6, emotion: 5, content: "오늘의 일기5", date: 1679465826747 },
+  { id: 5, emotion: 5, content: "오늘의 일기5", date: 1679465826747 },
 ];
 
 function App() {

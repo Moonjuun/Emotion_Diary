@@ -56,9 +56,8 @@ const Home = () => {
         leftChild={<MyButton text={"<"} onClick={decreaseMonth}></MyButton>}
         rightChild={<MyButton text={">"} onClick={increaseMonth}></MyButton>}
       ></MyHeader>
-      <DiaryList diaryList={data}></DiaryList>
       <h1>Home</h1>
-      <p>이 곳은 홈입니다.</p>
+      <DiaryList diaryList={data}></DiaryList>
     </div>
   );
 };
