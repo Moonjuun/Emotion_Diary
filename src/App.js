@@ -1,32 +1,33 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useReducer, useRef } from "react";
 
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import New from './pages/New';
-import Edit from './pages/Edit';
-import Diary from './pages/Diary';
+import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import New from "./pages/New";
+import Edit from "./pages/Edit";
+import Diary from "./pages/Diary";
 
 // Components
-import MyButton from './components/MyButton';
-import MyHeader from './components/MyHeader';
+import MyButton from "./components/MyButton";
 
 const reducer = (state, action) => {
   let newState = [];
-  switch(action.type) {
-    case 'INIT' :{
+  switch (action.type) {
+    case "INIT": {
       return action.data;
     }
-    case 'CREATE' :{
+    case "CREATE": {
       newState = [...action.data, ...state];
       break;
     }
-    case 'REMOVE' :{
-      newState = state.filter((it)=> it.id !== action.targetId);
+    case "REMOVE": {
+      newState = state.filter((it) => it.id !== action.targetId);
       break;
     }
-    case 'EDIT' :{
-      newState = state.map((it) => it.id === action.data.id ? {...action.date}: it);
+    case "EDIT": {
+      newState = state.map((it) =>
+        it.id === action.data.id ? { ...action.date } : it
+      );
       break;
     }
     default:
@@ -38,9 +39,16 @@ const reducer = (state, action) => {
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
+const dummyData = [
+  { id: 1, emotion: 1, content: "오늘의 일기1", date: 1679465758875 },
+  { id: 2, emotion: 2, content: "오늘의 일기2", date: 1679465758876 },
+  { id: 3, emotion: 3, content: "오늘의 일기3", date: 1679465816943 },
+  { id: 4, emotion: 4, content: "오늘의 일기4", date: 1679465822621 },
+  { id: 6, emotion: 5, content: "오늘의 일기5", date: 1679465826747 },
+];
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
+  const [data, dispatch] = useReducer(reducer, dummyData);
 
   const dataId = useRef(0);
   //CREATE
@@ -55,44 +63,43 @@ function App() {
       },
     });
     dataId.current += 1;
-  }
+  };
 
   //Edit
-  const onEdit = (targetId, date, content, emotion)=> {
+  const onEdit = (targetId, date, content, emotion) => {
     dispatch({
       type: "EDIT",
       data: {
         id: targetId,
         date: new Date(date).getTime(),
         content,
-        emotion
+        emotion,
       },
     });
   };
 
   //Remove
   const onRemove = (targetId) => {
-    dispatch({ type: "DELETE", targetId})
+    dispatch({ type: "DELETE", targetId });
   };
 
   return (
-    <DiaryStateContext.Provider value = {data}>
-      <DiaryDispatchContext.Provider value = {{
-        onCreate, onEdit, onRemove
-      }}>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider
+        value={{
+          onCreate,
+          onEdit,
+          onRemove,
+        }}
+      >
         <BrowserRouter>
           <div className="App">
-            <MyHeader headText={"App"} 
-            leftChild={<MyButton text={"왼쪽 버튼"} onClick={() => alert("왼쪽 버튼")}/>} 
-            rightChild={<MyButton text={"오른쪽 버튼"} onClick={() => alert("오른쪽 버튼")}/>}
-            />
             <Routes>
-              <Route path="/" element={ <Home /> } />
-              <Route path='/new' element={ <New />} />
-              <Route path='/edit' element={ <Edit />} />
-              <Route path='/diary/:id' element={ <Diary />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/new" element={<New />} />
+              <Route path="/edit" element={<Edit />} />
+              <Route path="/diary/:id" element={<Diary />} />
             </Routes>
-
           </div>
         </BrowserRouter>
       </DiaryDispatchContext.Provider>
