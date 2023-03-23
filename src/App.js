@@ -8,7 +8,6 @@ import Edit from "./pages/Edit";
 import Diary from "./pages/Diary";
 
 // Components
-import MyButton from "./components/MyButton";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -17,7 +16,7 @@ const reducer = (state, action) => {
       return action.data;
     }
     case "CREATE": {
-      newState = [...action.data, ...state];
+      newState = [action.data, ...state];
       break;
     }
     case "REMOVE": {
