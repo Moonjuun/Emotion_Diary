@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { DiaryDispatchContext } from "./../App.js";
 
 import MyButton from "./MyButton";
@@ -42,7 +42,10 @@ const getStringDate = (date) => {
   return date.toISOString().slice(0, 10);
 };
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ isEdit, originData }) => {
+  // 날짜 상태
+  const [date, setDate] = useState(getStringDate(new Date()));
+
   const navigate = useNavigate();
 
   // 오늘의 감정을 클릭시 상태값을 변화하는 함수!
@@ -56,22 +59,40 @@ const DiaryEditor = () => {
   const contentRef = useRef(); // 사용자가 아무것도 안적고 저장을 누를때 포커스 기능을 위한 useRef
 
   // 작성완료(저장) 함수
-  const { onCreate } = useContext(DiaryDispatchContext);
+  const { onCreate, onEdit } = useContext(DiaryDispatchContext);
   const handleSubmit = () => {
     if (content.length < 1) {
       contentRef.current.focus();
       return;
     }
-    onCreate(date, content, emotion);
+
+    if (
+      window.confirm(
+        isEdit ? "일기를 수정하시겠습니까?" : "새로운 일기를 작성하시겠습니까?"
+      )
+    ) {
+      if (!isEdit) {
+        onCreate(date, content, emotion);
+      } else {
+        onEdit(originData.id, date, content, emotion);
+      }
+    }
     navigate("/", { replace: true });
   };
 
-  const [date, setDate] = useState(getStringDate(new Date()));
+  useEffect(() => {
+    if (isEdit) {
+      setDate(getStringDate(new Date(parseInt(originData.date))));
+      setEmotion(originData.emotion);
+      setContent(originData.content);
+    }
+  }, [isEdit, originData]);
+
   return (
     <div className="DiaryEditor">
       <div>
         <MyHeader
-          headText={"새 일기쓰기"}
+          headText={isEdit ? "일기 수정하기" : "새 일기쓰기"}
           leftChild={
             <MyButton
               text={"< 뒤로가기"}

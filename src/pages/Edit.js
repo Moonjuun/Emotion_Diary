@@ -1,31 +1,41 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { DiaryStateContext } from "../App";
+import DiaryEditor from "../components/DiaryEditor";
 
 const Edit = () => {
+  const [originData, setOriginData] = useState();
 
-    //링크 태그를 안눌러도 이동시킬 수 있다!
-    const navigate = useNavigate();
+  //링크 태그를 안눌러도 이동시킬 수 있다!
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    //setSearchParams는 searchParams를 변경 시키는 역할을 한다 (쿼리스트링을 바꿀 수 있다)
-    // [] 안에 비구조할당 이름은 아무거나 써도 되지만 useSearchParams()은 꼭 이렇게 이름 써야함!
-    const [searchParams, setSearchParams] = useSearchParams();
+  // DiaryStateContext가 제공하는 diaryList를 불러온다
+  const diaryList = useContext(DiaryStateContext);
 
-    const id = searchParams.get('id');
-    console.log(id);
-
-    const mode = searchParams.get('mode');
-    console.log(mode);
-
-    return (
-        <div>
-            <h1>Edit</h1>
-            <p>이 곳은 일기 수정 페이지입니다.</p>
-            <button onClick={() => setSearchParams({who: "MJ"})}>쿼리스트링 바꾸기!</button>
-
-            <button onClick={() => {navigate("/home");}}>홈으로 이동</button>
-            <button onClick={() => {navigate(-1);}}>뒤로가기</button>
-
-        </div>
-    );
+  // 컴포넌트가 마운트가 됐을때 수행함
+  // id와 diaryList가 변할때만 리스트를 불러옴
+  useEffect(() => {
+    if (diaryList.length >= 1) {
+      const targetDiary = diaryList.find(
+        (it) => parseInt(it.id) === parseInt(id)
+      );
+      if (targetDiary) {
+        setOriginData(targetDiary);
+      } else {
+        alert("없는 일기입니다.");
+        navigate("/", { replace: true });
+      }
+    }
+  }, [id, diaryList]);
+  return (
+    <div>
+      <h1>Edit</h1>
+      <div>
+        {originData && <DiaryEditor isEdit={true} originData={originData} />}
+      </div>
+    </div>
+  );
 };
 
 export default Edit;
