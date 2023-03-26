@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useRef, useState, useContext, useEffect } from "react";
+import { useRef, useState, useContext, useEffect, useCallback } from "react";
 import { DiaryDispatchContext } from "./../App.js";
 
 import MyButton from "./MyButton";
@@ -18,9 +18,9 @@ const DiaryEditor = ({ isEdit, originData }) => {
 
   // 오늘의 감정을 클릭시 상태값을 변화하는 함수!
   const [emotion, setEmotion] = useState(3);
-  const handClickEmote = (emotion) => {
+  const handClickEmote = useCallback((emotion) => {
     setEmotion(emotion);
-  };
+  }, []);
 
   // textarea의 state를 맵핑하기 위한 새로운 state
   const [content, setContent] = useState("");
