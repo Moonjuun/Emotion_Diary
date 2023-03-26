@@ -27,7 +27,7 @@ const DiaryEditor = ({ isEdit, originData }) => {
   const contentRef = useRef(); // 사용자가 아무것도 안적고 저장을 누를때 포커스 기능을 위한 useRef
 
   // 작성완료(저장) 함수
-  const { onCreate, onEdit } = useContext(DiaryDispatchContext);
+  const { onCreate, onEdit, onRemove } = useContext(DiaryDispatchContext);
   const handleSubmit = () => {
     if (content.length < 1) {
       contentRef.current.focus();
@@ -48,6 +48,13 @@ const DiaryEditor = ({ isEdit, originData }) => {
     navigate("/", { replace: true });
   };
 
+  const handleRemove = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      onRemove(originData.id);
+      navigate("/", { replace: true });
+    }
+  };
+
   useEffect(() => {
     if (isEdit) {
       setDate(getStringDate(new Date(parseInt(originData.date))));
@@ -66,6 +73,15 @@ const DiaryEditor = ({ isEdit, originData }) => {
               text={"< 뒤로가기"}
               onClick={() => navigate(-1)}
             ></MyButton>
+          }
+          rightChild={
+            isEdit && (
+              <MyButton
+                text={"삭제하기"}
+                type={"negative"}
+                onClick={handleRemove}
+              ></MyButton>
+            )
           }
         ></MyHeader>
         <div>

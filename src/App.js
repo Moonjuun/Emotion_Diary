@@ -1,7 +1,7 @@
-import React, { useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, json, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
@@ -32,22 +32,20 @@ const reducer = (state, action) => {
     default:
       return state;
   }
+  localStorage.setItem("diary", JSON.stringify(newState));
   return newState;
 };
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
-const dummyData = [
-  { id: 1, emotion: 1, content: "오늘의 일기1", date: 1679465758875 },
-  { id: 2, emotion: 2, content: "오늘의 일기2", date: 1679465758876 },
-  { id: 3, emotion: 3, content: "오늘의 일기3", date: 1679465816943 },
-  { id: 4, emotion: 4, content: "오늘의 일기4", date: 1679465822621 },
-  { id: 5, emotion: 5, content: "오늘의 일기5", date: 1679465826747 },
-];
-
 function App() {
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  useEffect(() => {
+    const item1 = localStorage.getItem("item1");
+    console.log(item1);
+  }, []);
+
+  const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(6);
   //CREATE
@@ -79,7 +77,7 @@ function App() {
 
   //Remove
   const onRemove = (targetId) => {
-    dispatch({ type: "DELETE", targetId });
+    dispatch({ type: "REMOVE", targetId });
   };
 
   return (
