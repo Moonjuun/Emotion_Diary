@@ -41,13 +41,20 @@ export const DiaryDispatchContext = React.createContext();
 
 function App() {
   useEffect(() => {
-    const item1 = localStorage.getItem("item1");
-    console.log(item1);
+    const localData = localStorage.getItem("diary");
+    if (localData) {
+      const diaryList = JSON.parse(localData).sort(
+        (a, b) => parseInt(b.id) - parseInt(a.id)
+      );
+      dataId.current = parseInt(diaryList[0].id) + 1;
+
+      dispatch({ type: "INIT", data: diaryList });
+    }
   }, []);
 
   const [data, dispatch] = useReducer(reducer, []);
 
-  const dataId = useRef(6);
+  const dataId = useRef(0);
   //CREATE
   const onCreate = (date, content, emotion) => {
     dispatch({
