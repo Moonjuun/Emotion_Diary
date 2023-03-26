@@ -120,7 +120,7 @@ header button {
   flex-grow: 1;
 }
 
-.DiaryList .menu_wrapper .right_col .button {
+.DiaryList .menu_wrapper .right_col button {
   width: 100%;
 }
 
