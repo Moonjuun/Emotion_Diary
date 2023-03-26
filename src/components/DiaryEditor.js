@@ -6,41 +6,9 @@ import MyButton from "./MyButton";
 import MyHeader from "./MyHeader";
 import EmotionItem from "./EmotionItem";
 
-const env = process.env;
-env.PUBLIC_URL = env.PUBLIC_URL || "";
-
-const emotionList = [
-  {
-    emotion_id: 1,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion1.png`,
-    emotion_descript: "오늘 뭔 날??",
-  },
-  {
-    emotion_id: 2,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion2.png`,
-    emotion_descript: "우왕굳",
-  },
-  {
-    emotion_id: 3,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion3.png`,
-    emotion_descript: "그럭저럭",
-  },
-  {
-    emotion_id: 4,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion4.png`,
-    emotion_descript: "먼 일이고..",
-  },
-  {
-    emotion_id: 5,
-    emotion_img: process.env.PUBLIC_URL + `/assets/emotion5.png`,
-    emotion_descript: "힐링이 필요해..",
-  },
-];
-
-const getStringDate = (date) => {
-  // toISOString은 date객체를 yyyy-mm-dd(hh:mm:ss)로 문자열로 반환해줌
-  return date.toISOString().slice(0, 10);
-};
+// util
+import { getStringDate } from "../util/data.js";
+import { emotionList } from "../util/emotion.js";
 
 const DiaryEditor = ({ isEdit, originData }) => {
   // 날짜 상태
