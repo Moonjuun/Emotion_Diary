@@ -6,6 +6,11 @@ import DiaryEditor from "../components/DiaryEditor";
 const Edit = () => {
   const [originData, setOriginData] = useState();
 
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName("title")[0];
+    titleElement.innerHTML = `감정 일기장 - ${id}번 일기 수정`;
+  }, []);
+
   //링크 태그를 안눌러도 이동시킬 수 있다!
   const navigate = useNavigate();
   const { id } = useParams();
